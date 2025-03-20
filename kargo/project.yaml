@@ -9,3 +9,5 @@ spec:
       autoPromotionEnabled: true
     - stage: cert-manager
       autoPromotionEnabled: true
+    - stage: kargo
+      autoPromotionEnabled: true

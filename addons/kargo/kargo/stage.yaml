@@ -1,0 +1,23 @@
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: kargo
+  namespace: addons
+spec:
+  requestedFreight:
+    - origin:
+        kind: Warehouse
+        name: kargo
+      sources:
+        direct: true
+  promotionTemplate:
+    spec:
+      steps:
+        - task:
+            name: addons
+          vars:
+            - name: addon
+              value: kargo
+            - name: chartRepoUrl
+              value: oci://ghcr.io/akuity/kargo-charts/kargo
