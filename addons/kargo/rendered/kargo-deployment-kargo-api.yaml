@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: api
+    app.kubernetes.io/instance: kargo
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: kargo
+    app.kubernetes.io/version: v1.3.1
+    helm.sh/chart: kargo-1.3.1
+  name: kargo-api
+  namespace: kargo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: api
+      app.kubernetes.io/instance: kargo
+      app.kubernetes.io/name: kargo
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        configmap/checksum: 4d06d3e3841d2e23f4614c31e19ca4b2884d81ede6af86c5ea46896b8d056f56
+        secret/checksum: 5008bd87b25e37e99e4c790f2bcd9b47d604a994f59a93f7df5c937e159025df
+      labels:
+        app.kubernetes.io/component: api
+        app.kubernetes.io/instance: kargo
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: kargo
+        app.kubernetes.io/version: v1.3.1
+        helm.sh/chart: kargo-1.3.1
+    spec:
+      containers:
+      - command:
+        - /usr/local/bin/kargo
+        - api
+        env:
+        - name: GOMEMLIMIT
+          valueFrom:
+            resourceFieldRef:
+              containerName: api
+              divisor: "1"
+              resource: limits.memory
+        - name: GOMAXPROCS
+          valueFrom:
+            resourceFieldRef:
+              containerName: api
+              divisor: "1"
+              resource: limits.cpu
+        envFrom:
+        - configMapRef:
+            name: kargo-api
+        - secretRef:
+            name: kargo-api
+        image: ghcr.io/akuity/kargo:v1.3.1
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          grpc:
+            port: 8080
+          initialDelaySeconds: 10
+        name: api
+        ports:
+        - containerPort: 8080
+          name: h2c
+          protocol: TCP
+        readinessProbe:
+          grpc:
+            port: 8080
+          initialDelaySeconds: 5
+        resources: {}
+      serviceAccount: kargo-api
