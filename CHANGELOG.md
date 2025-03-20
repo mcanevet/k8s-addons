@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.3.0](https://github.com/mcanevet/k8s-addons/compare/v1.2.0...v1.3.0) (2025-03-20)
+
+
+### Features
+
+* add kargo addon ([785f194](https://github.com/mcanevet/k8s-addons/commit/785f1948a5ec730bddf5a7255755097c39a529ca))
+* update kargo ([7de1b35](https://github.com/mcanevet/k8s-addons/commit/7de1b3599ce04d9cef560a6afe6ebe0246d68a4e))
+* update kargo ([6dbfc71](https://github.com/mcanevet/k8s-addons/commit/6dbfc71a3589aab626496fd2de2a3b5d7d968a69))
+
 ## [1.2.0](https://github.com/mcanevet/k8s-addons/compare/v1.1.0...v1.2.0) (2025-03-20)
 
 
