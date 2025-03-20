@@ -1,0 +1,25 @@
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: argocd
+  namespace: addons
+spec:
+  requestedFreight:
+    - origin:
+        kind: Warehouse
+        name: argocd
+      sources:
+        direct: true
+  promotionTemplate:
+    spec:
+      steps:
+        - task:
+            name: addons
+          vars:
+            - name: addon
+              value: argocd
+            - name: chartRepoUrl
+              value: https://argoproj.github.io/argo-helm
+            - name: chartName
+              value: argo-cd

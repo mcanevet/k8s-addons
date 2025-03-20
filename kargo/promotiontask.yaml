@@ -1,0 +1,59 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: PromotionTask
+metadata:
+  name: addons
+  namespace: addons
+spec:
+  vars:
+    - name: gitRepo
+      value: https://github.com/mcanevet/k8s-addons.git
+  steps:
+    - uses: git-clone
+      config:
+        repoURL: ${{ vars.gitRepo }}
+        checkout:
+          - branch: main
+            path: ./src
+    - uses: yaml-update
+      config:
+        path: ./src/addons/${{ vars.addon }}/base/kustomization.yaml
+        updates:
+          - key: helmCharts.0.version
+            value: ${{ chartFrom(vars.chartRepoUrl, vars.chartName, warehouse(vars.addon)).Version }}
+      if: ${{ vars.chartName != nil }}
+    - uses: yaml-update
+      config:
+        path: ./src/addons/${{ vars.addon }}/base/kustomization.yaml
+        updates:
+          - key: helmCharts.0.version
+            value: ${{ chartFrom(vars.chartRepoUrl, warehouse(vars.addon)).Version }}
+      if: ${{ vars.chartName == nil }}
+    - uses: delete
+      config:
+        path: ./src/addons/${{ vars.addon }}/rendered
+    - uses: kustomize-build
+      config:
+        path: ./src/addons/${{ vars.addon }}/base
+        outPath: ./src/addons/${{ vars.addon }}/rendered
+    - uses: git-commit
+      as: commit
+      config:
+        path: ./src/addons/${{ vars.addon }}
+        message: "feat: update ${{ vars.addon }}"
+    - uses: git-push
+      as: push
+      config:
+        path: ./src
+        targetBranch: kargo-${{ vars.addon }}
+    - uses: git-open-pr
+      as: open-pr
+      config:
+        repoURL: ${{ vars.gitRepo }}
+        createTargetBranch: true
+        sourceBranch: kargo-${{ vars.addon }}
+        targetBranch: main
+    - uses: git-wait-for-pr
+      as: wait-for-pr
+      config:
+        repoURL: ${{ vars.gitRepo }}
+        prNumber: ${{ outputs['open-pr'].prNumber }}
