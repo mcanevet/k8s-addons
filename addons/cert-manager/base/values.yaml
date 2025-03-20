@@ -1,0 +1,8 @@
+---
+crds:
+  enabled: true
+
+global:
+  revisionHistoryLimit: 0
+  leaderElection:
+    namespace: cert-manager

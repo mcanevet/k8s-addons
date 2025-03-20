@@ -1,0 +1,25 @@
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: cert-manager
+  namespace: addons
+spec:
+  requestedFreight:
+    - origin:
+        kind: Warehouse
+        name: cert-manager
+      sources:
+        direct: true
+  promotionTemplate:
+    spec:
+      steps:
+        - task:
+            name: addons
+          vars:
+            - name: addon
+              value: cert-manager
+            - name: chartRepoUrl
+              value: https://charts.jetstack.io
+            - name: chartName
+              value: cert-manager

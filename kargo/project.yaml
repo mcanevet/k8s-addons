@@ -7,3 +7,5 @@ spec:
   promotionPolicies:
     - stage: argocd
       autoPromotionEnabled: true
+    - stage: cert-manager
+      autoPromotionEnabled: true
