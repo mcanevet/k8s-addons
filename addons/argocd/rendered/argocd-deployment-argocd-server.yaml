@@ -7,8 +7,8 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: argocd-server
     app.kubernetes.io/part-of: argocd
-    app.kubernetes.io/version: v2.14.6
-    helm.sh/chart: argo-cd-7.8.12
+    app.kubernetes.io/version: v2.14.7
+    helm.sh/chart: argo-cd-7.8.13
   name: argocd-server
   namespace: argocd
 spec:
@@ -21,16 +21,16 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/cm: d7ac54ac3430a7da76e19b50209edd9346eda5913ef421423dcfd4cc2c3a5f40
-        checksum/cmd-params: 1685bd6667c90c89f5d0b0b71e7f605d607caf85e526360cbb7d8c4227f9d6c3
+        checksum/cm: 7a1e7eb9be3ad316d5c9e0d928c19a22e0a29d158b02d7a10071dc13fe03d129
+        checksum/cmd-params: 4e574934a7af84ff5dd03436a54183890af39cdd8a9c63710a1b35244b1c08fc
       labels:
         app.kubernetes.io/component: server
         app.kubernetes.io/instance: argocd
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: argocd-server
         app.kubernetes.io/part-of: argocd
-        app.kubernetes.io/version: v2.14.6
-        helm.sh/chart: argo-cd-7.8.12
+        app.kubernetes.io/version: v2.14.7
+        helm.sh/chart: argo-cd-7.8.13
     spec:
       affinity:
         podAntiAffinity:
@@ -344,7 +344,7 @@ spec:
               key: hydrator.enabled
               name: argocd-cmd-params-cm
               optional: true
-        image: quay.io/argoproj/argocd:v2.14.6
+        image: quay.io/argoproj/argocd:v2.14.7
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 3
